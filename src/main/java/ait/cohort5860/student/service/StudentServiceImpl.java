@@ -9,6 +9,7 @@ import ait.cohort5860.student.dto.exceptions.NotFoundException;
 import ait.cohort5860.student.model.Student;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -97,6 +98,7 @@ public class StudentServiceImpl implements StudentService {
 
         // Save updated student
         studentRepository.save(student);
+        // studentRepository. - checkout all available methods
 
         return added;
     }
