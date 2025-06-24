@@ -107,16 +107,31 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public List<StudentDto> findStudentsByName(String name) {
-        return studentRepository.findAll().stream()
+
+        return studentRepository.findByNameIgnoreCase(name) // find via DB
+                .map(
+                        s -> new StudentDto(
+                                s.getId(),
+                                s.getName(),
+                                s.getScores())
+                )
+                .toList();
+
+        /* return studentRepository.findAll().stream()
                 .filter(s -> name.equalsIgnoreCase(s.getName()))
                 .map(s -> new StudentDto(s.getId(), s.getName(), s.getScores()))
                 .toList();
+         */
     }
 
 
 
     @Override
     public Long countStudentsByNames(Set<String> names) {
+
+        return studentRepository.countByNameInIgnoreCase(names);
+
+        /*
         // Get all students
         List<Student> students = studentRepository.findAll();
 
@@ -124,23 +139,18 @@ public class StudentServiceImpl implements StudentService {
         return students.stream()
                 .filter(student -> names.contains(student.getName()))
                 .count();
+
+         */
     }
 
     @Override
     public List<StudentDto> findStudentsByExamNameMinScore(String examName, Integer minScore) {
-        // All students by ExamName and minimum score from
-        return studentRepository.findAll().stream()
-
-                // Filter
-                .filter(student ->
-                        student.getScores().containsKey(examName) &&
-                                student.getScores().get(examName) >= minScore
-                )
+        // All students by ExamName and minimum score via DB
+        return studentRepository.findByExamAndScoresGreaterThan(examName, minScore)
                 .map(student -> new StudentDto(
                         student.getId(),
                         student.getName(),
-                        student.getScores()
-                ))
+                        student.getScores()))
                 .toList();
     }
 }

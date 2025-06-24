@@ -13,6 +13,7 @@ import java.util.Map;
 @EqualsAndHashCode(of = "id")
 @Document(collection = "Students")
 public class Student {
+
     // @Id - primary key field
     private long id;
     @Setter
